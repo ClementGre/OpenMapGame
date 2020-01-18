@@ -1,11 +1,15 @@
 package shaders;
 
+import fr.themsou.utils.Vector3f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
 public abstract class ShaderProgram {
 
@@ -13,7 +17,10 @@ public abstract class ShaderProgram {
     private int vertexShaderID;
     private int fragmentShaderID;
 
-    public ShaderProgram(String vertexFile, String fragmentFile){
+    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+
+    public ShaderProgram(String vertexFile, String fragmentFile){ // Setup le shaderProgramm avec le vertexShader et le FragmentShader
+
         vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
         fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
 
@@ -21,35 +28,56 @@ public abstract class ShaderProgram {
         GL20.glAttachShader(programID, vertexShaderID);
         GL20.glAttachShader(programID, fragmentShaderID);
 
+        bindAttributes();
+
         GL20.glLinkProgram(programID);
         GL20.glValidateProgram(programID);
 
-        bindAttributes();
+        getAllUniformLocations();
+
     }
 
-    public void start(){
-        GL20.glUseProgram(programID);
-    }
-    public void stop(){
-        GL20.glUseProgram(0);
-    }
+////////////////// BIND DES SLOT DE VBO A DES NOMS DE VARIABLES DE SHADER /////////////////
 
-    public void cleanUP(){
-        stop();
-        GL20.glDetachShader(programID, vertexShaderID);
-        GL20.glDetachShader(programID, fragmentShaderID);
-        GL20.glDeleteShader(vertexShaderID);
-        GL20.glDeleteShader(fragmentShaderID);
-        GL20.glDeleteProgram(programID);
-    }
-
-    protected abstract void bindAttributes();
-
-    protected void bindAttribute(int attribute, String variableName){
+    protected abstract void bindAttributes(); // Demande à la sous-classe de bind les donnés des VBO
+    protected void bindAttribute(int attribute, String variableName){ // Bind les donnés d'un VBO sur un nom de variable de shader
         GL20.glBindAttribLocation(programID, attribute, variableName);
     }
 
-    private static int loadShader(String file, int type){
+//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////// GESTION DES VARIABLES UNIFORM /////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+    protected abstract void getAllUniformLocations(); // ??
+    protected int getUniformLocation(String uniformName){ // Bind les donnés d'une variable sur un nom de variable uniform de shader
+        return GL20.glGetUniformLocation(programID, uniformName);
+    } // ??
+
+/////////////// CHARGER DES VALEURS DANS DES VARIABLES UNIFORM DE SHADERS ///////////////
+
+    protected void loadFloat(int location, float value){
+        GL20.glUniform1f(location, value);
+    }
+    protected void loadVector(int location, Vector3f vector){
+        GL20.glUniform3f(location, vector.getX(), vector.getY(), vector.getZ());
+    }
+    protected void loadBoolean(int location, boolean value){
+        float toLoad = value ? 1 : 0;
+        GL20.glUniform1f(location, toLoad);
+    }
+    protected void loadMatrix(int location, Matrix4f matrix){
+        matrix.store(matrixBuffer);
+        matrixBuffer.flip();
+        GL20.glUniformMatrix3(location, false, matrixBuffer);
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+    private static int loadShader(String file, int type){ // Charge un fichier de shader, le compile et renvoie son ID
 
         StringBuilder shaderSource = new StringBuilder();
         try{
@@ -72,7 +100,24 @@ public abstract class ShaderProgram {
             System.exit(-1);
         }
         return shaderID;
+    }
 
+////////////////////////////// GESTION GENERALE DU SHADER /////////////////////////////
+
+    public void start(){
+        GL20.glUseProgram(programID);
+    } // Bind le Shader (Appelé lors du rendu)
+    public void stop(){
+        GL20.glUseProgram(0);
+    } // Unbind le shader
+
+    public void cleanUP(){ // Supprime les shaders du program et supprime aussi le program
+        stop();
+        GL20.glDetachShader(programID, vertexShaderID);
+        GL20.glDetachShader(programID, fragmentShaderID);
+        GL20.glDeleteShader(vertexShaderID);
+        GL20.glDeleteShader(fragmentShaderID);
+        GL20.glDeleteProgram(programID);
     }
 
 }

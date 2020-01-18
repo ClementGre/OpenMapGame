@@ -22,19 +22,23 @@ public class Loader {
     private List<Integer> vbos = new ArrayList<>();
     private List<Integer> textures = new ArrayList<>();
 
-    public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices){
+    public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices){ // Crée un VAO et le renvoie sous forme de RawModel (Qui peut être stoqué dans un TexturedModel)
 
-        int vaoID = createAndBindVAO();
-        bindIndicesBuffer(indices);
-        storeDataInAttributeList(0, 3, positions);
-        storeDataInAttributeList(1, 2, textureCoords);
-        unbindVAO();
+        int vaoID = GL30.glGenVertexArrays();
+        vaos.add(vaoID);
+        GL30.glBindVertexArray(vaoID); // Bind le VAO
+            bindIndicesBuffer(indices); // Définir les indices de vertex
+            storeDataInAttributeList(0, 3, positions); // Définir les positions des vertex
+            storeDataInAttributeList(1, 2, textureCoords); // Définir les coordonnés de texture
+        GL30.glBindVertexArray(0); // Unbind le VAO
 
         return new RawModel(vaoID, indices.length);
 
     }
 
-    private void storeDataInAttributeList(int attributeNumber, int coordinateSize,  float[] data){
+//////////////////////////////////// ENREGISTREMENT DES VBO /////////////////////////////////////
+
+    private void storeDataInAttributeList(int attributeNumber, int coordinateSize,  float[] data){ // Charger des floats dans un VBO et l'ajouter dans un slot du VBO
 
         int vboID = GL15.glGenBuffers(); // générer le vVBO
         vbos.add(vboID);
@@ -48,32 +52,11 @@ public class Loader {
 
     }
 
-    public int loadTexture(String fileName){
-        Texture texture = null;
-        try{
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + fileName));
-        }catch(IOException e){ e.printStackTrace(); }
-
-        int textureID = texture.getTextureID();
-        textures.add(textureID);
-        return textureID;
-    }
-
-    private int createAndBindVAO(){
-        int vaoID = GL30.glGenVertexArrays();
-        vaos.add(vaoID);
-        GL30.glBindVertexArray(vaoID);
-        return vaoID;
-    }
-    private void unbindVAO(){
-        GL30.glBindVertexArray(0);
-    }
-
-    private void bindIndicesBuffer(int[] indices){
+    private void bindIndicesBuffer(int[] indices){ // Charger les indices de vertex dans le slot spécial (Automatic)
 
         // Les VAOs contiennent un "slot spécial" pour les index vbo, le fait de bind un vbo "d'index"
         // le bind automatiquement au VAO courrant. C'est pourquoi on n'ajoute pas le vbo dans le VAO
-        // et qu'on ne dé-bind pas le vbo
+        // et qu'on ne dé-bind pas le vbo.
 
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
@@ -83,6 +66,8 @@ public class Loader {
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW); // Initialiser le contenu du VBO (Puis il se bind automatiquement au VAO)
 
     }
+
+/////////////// TRANSFERER DES FLOAT EN FLOATBUFFER (Changer l'emplacement de la variable pour que la CG puisse la lire) ///////////////
 
     private IntBuffer storeDataInIntBuffer(int[] data){
 
@@ -100,6 +85,21 @@ public class Loader {
 
         return buffer;
     }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+    public int loadTexture(String fileName){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
+        Texture texture = null;
+        try{
+            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + fileName));
+        }catch(IOException e){ e.printStackTrace(); }
+
+        int textureID = texture.getTextureID();
+        textures.add(textureID);
+        return textureID;
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
     public void cleanUP(){
 

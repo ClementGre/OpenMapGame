@@ -17,28 +17,27 @@ public class MainLoop {
             if(Mouse.isGrabbed()){
                 DisplayManager.camera.input();
             }
-
             DisplayManager.setTitle("OpenMapGame - " + DisplayManager.camera.getPosition());
 
 
             // Render vertex
-            Main.renderer.prepare();
+            Main.renderer.prepare(); // Clear last screen
 
-
-            Main.shader.start();
+            Main.shader.start(); // Bind le StaticShader sauvegardé dans Main
 
                 //DisplayManager.camera.getPerspectiveProjection();
                 //DisplayManager.camera.update();
 
-                Main.renderer.render(Main.texturedModel);
+                Main.renderer.render(Main.texturedModel); // Fais le rendu du TexturedModel sauvegardé dans Main
 
-            Main.shader.stop();
+            Main.shader.stop(); // Unind le StaticShader sauvegardé dans Main
 
 
             // Update screen ans sync FPS
             DisplayManager.updateDisplay();
 
         }
+        // CLose display
         Main.onCloseDisplay();
     }
 }

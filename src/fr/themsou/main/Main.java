@@ -6,22 +6,22 @@ import fr.themsou.textures.ModelTexture;
 import models.RawModel;
 import fr.themsou.renderEngine.Renderer;
 import models.TexturedModel;
+import shaders.ShaderProgram;
 import shaders.StaticShader;
 
 public class Main {
 
-    public static Loader loader = new Loader();
+    public static Loader loader = new Loader(); // Classe instancié une seul fois, elle permet de créer les RawModel et les ModelTexture
+
     public static Renderer renderer = new Renderer();
-    public static TexturedModel texturedModel;
+
+    public static TexturedModel texturedModel; // Model de test
     public static StaticShader shader;
 
     public static  void main(String args[]){
 
         DisplayManager.createDisplay(0, 0, 0, "Open Map Game");
-
         shader = new StaticShader();
-
-
 
         float[] vertices = {
                 0f, 0.5f, 0f,//v0
@@ -40,9 +40,9 @@ public class Main {
                 3, 1, 2 //bottom right triangle (v3, v1, v2)
         };
 
-        RawModel model = loader.loadToVAO(vertices, textureCoords, indices);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("planks.png"));
-        texturedModel = new TexturedModel(model, texture);
+        RawModel model = loader.loadToVAO(vertices, textureCoords, indices); // Crée un RawModel avec Loader
+        ModelTexture texture = new ModelTexture(loader.loadTexture("planks.png")); // Crée un Modeltexture avec Loader
+        texturedModel = new TexturedModel(model, texture); // Fusionne le RawModel avec le ModelTexture
 
         MainLoop.startMainLoop();
 
