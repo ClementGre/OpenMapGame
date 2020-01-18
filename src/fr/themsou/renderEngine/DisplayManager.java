@@ -1,5 +1,6 @@
 package fr.themsou.renderEngine;
 
+import fr.themsou.utils.Vector3f;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
@@ -14,6 +15,7 @@ public class DisplayManager {
     private static int height = 720;
     private static int fpsCap = 120;
 
+    public static Camera camera;
 
     public static void createDisplay(int width, int height, int fpsCap, String title){
 
@@ -21,22 +23,21 @@ public class DisplayManager {
         if(height != 0) DisplayManager.height = height;
         if(fpsCap != 0) DisplayManager.fpsCap = fpsCap;
 
-        ContextAttribs attribs = new ContextAttribs(3,2);
-        attribs.withForwardCompatible(true);
-        attribs.withProfileCore(true);
+        ContextAttribs attribs = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
 
         try{
 
-            Display.setDisplayMode(new DisplayMode(DisplayManager.width, DisplayManager.height));
+            Display.setDisplayMode(new DisplayMode(DisplayManager.width,  DisplayManager.height));
             Display.setTitle(title);
             Display.setResizable(true);
             Display.create(new PixelFormat(), attribs);
 
-            glEnable(GL_DEPTH_TEST);
 
         }catch(LWJGLException e){ e.printStackTrace(); }
 
         glViewport(0, 0, DisplayManager.width,  DisplayManager.height);
+        camera = new Camera(new Vector3f(0, 0, 0));
+        camera.setPerspectiveProjection(70.0f, 0.1f, 1000.0f);
 
     }
 
@@ -46,18 +47,12 @@ public class DisplayManager {
         Display.update();
     }
 
-    public static void clearBuffers(){
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
-
-    public static boolean isClosed(){
-
-        return Display.isCloseRequested();
-    }
-
     public static void closeDisplay(){
 
         Display.destroy();
+    }
+
+    public static void setTitle(String title){
+        Display.setTitle(title);
     }
 }
