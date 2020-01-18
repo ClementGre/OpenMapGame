@@ -30,7 +30,7 @@ public class MainLoop {
                 //DisplayManager.camera.getPerspectiveProjection();
                 //DisplayManager.camera.update();
 
-                Main.renderer.render(Main.model);
+                Main.renderer.render(Main.texturedModel);
 
             Main.shader.stop();
 

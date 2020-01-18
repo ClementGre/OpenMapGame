@@ -1,4 +1,4 @@
-package fr.themsou.renderEngine;
+package models;
 
 public class RawModel {
 
@@ -12,7 +12,6 @@ public class RawModel {
         this.vertexCount = vertexCount;
 
     }
-
 
     public int getVaoID() {
         return vaoID;
