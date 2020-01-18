@@ -4,16 +4,20 @@ import fr.themsou.renderEngine.DisplayManager;
 import fr.themsou.renderEngine.Loader;
 import fr.themsou.renderEngine.RawModel;
 import fr.themsou.renderEngine.Renderer;
+import shaders.StaticShader;
 
 public class Main {
 
     public static Loader loader = new Loader();
     public static Renderer renderer = new Renderer();
     public static  RawModel model;
+    public static StaticShader shader;
 
     public static  void main(String args[]){
 
         DisplayManager.createDisplay(0, 0, 0, "Open Map Game");
+
+        shader = new StaticShader();
 
         float[] vertices = {
                 -0.5f, 0.5f, 0f,//v0
@@ -32,6 +36,7 @@ public class Main {
     }
 
     public static void onCloseDisplay(){
+        shader.cleanUP();
         loader.cleanUP();
         DisplayManager.closeDisplay();
     }

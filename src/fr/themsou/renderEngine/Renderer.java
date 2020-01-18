@@ -23,6 +23,5 @@ public class Renderer {
             GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
 
-
     }
 }

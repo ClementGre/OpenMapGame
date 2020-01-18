@@ -22,10 +22,18 @@ public class MainLoop {
 
 
             // Render vertex
-            //DisplayManager.camera.getPerspectiveProjection();
-            //DisplayManager.camera.update();
             Main.renderer.prepare();
-            Main.renderer.render(Main.model);
+
+
+            Main.shader.start();
+
+                //DisplayManager.camera.getPerspectiveProjection();
+                //DisplayManager.camera.update();
+
+                Main.renderer.render(Main.model);
+
+            Main.shader.stop();
+
 
             // Update screen ans sync FPS
             DisplayManager.updateDisplay();
