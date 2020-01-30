@@ -1,6 +1,6 @@
 package fr.themsou.entities;
 
-import models.TexturedModel;
+import fr.themsou.models.TexturedModel;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Entity {

@@ -3,7 +3,7 @@ package fr.themsou.main;
 import fr.themsou.renderEngine.DisplayManager;
 import fr.themsou.renderEngine.Loader;
 import fr.themsou.renderEngine.Renderer;
-import shaders.StaticShader;
+import fr.themsou.shaders.StaticShader;
 
 public class Main {
 

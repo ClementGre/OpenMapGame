@@ -1,6 +1,6 @@
 package fr.themsou.renderEngine;
 
-import models.RawModel;
+import fr.themsou.models.RawModel;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -22,7 +22,7 @@ public class Loader {
     private List<Integer> vbos = new ArrayList<>();
     private List<Integer> textures = new ArrayList<>();
 
-    public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices){ // Crée un VAO et le renvoie sous forme de RawModel (Qui peut être stoqué dans un TexturedModel)
+    public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices){ // Crée un VAO et le renvoie sous forme de RawModel (Qui peut être stoqué dans un TexturedModel)
 
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
@@ -30,6 +30,7 @@ public class Loader {
             bindIndicesBuffer(indices); // Définir les indices de vertex
             storeDataInAttributeList(0, 3, positions); // Définir les positions des vertex
             storeDataInAttributeList(1, 2, textureCoords); // Définir les coordonnés de texture
+            storeDataInAttributeList(2, 3, normals); // Définir les normales des vertex
         GL30.glBindVertexArray(0); // Unbind le VAO
 
         return new RawModel(vaoID, indices.length);

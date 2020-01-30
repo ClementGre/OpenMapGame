@@ -2,8 +2,8 @@ package fr.themsou.renderEngine;
 
 import fr.themsou.main.Main;
 import fr.themsou.textures.ModelTexture;
-import models.RawModel;
-import models.TexturedModel;
+import fr.themsou.models.RawModel;
+import fr.themsou.models.TexturedModel;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -120,7 +120,7 @@ public class OBJLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        return loader.loadToVAO(verticesArray, textureArray, indicesArray);
+        return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 
     }
 

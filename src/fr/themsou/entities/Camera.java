@@ -2,12 +2,7 @@ package fr.themsou.entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 public class Camera {
 
@@ -21,13 +16,12 @@ public class Camera {
         this.setPosition(position);
     }
 
-    /*public Vector3f getForward(){
+    public Vector3f getForward(){
 
         Vector3f r = new Vector3f();
-        Vector3f rot = new Vector3f(rotation);
 
-        float cosY = (float) Math.cos(Math.toRadians(rot.getY() + 90));
-        float sinY = (float) Math.sin(Math.toRadians(rot.getY() + 90));
+        float cosY = (float) Math.cos(Math.toRadians(yaw + 90));
+        float sinY = (float) Math.sin(Math.toRadians(yaw + 90));
 
         r.setX(cosY);
         r.setZ(sinY);
@@ -36,28 +30,19 @@ public class Camera {
     public Vector3f getRight(){
 
         Vector3f r = new Vector3f();
-        Vector3f rot = new Vector3f(rotation);
 
-        float cosY = (float)Math.cos(Math.toRadians(rot.getY()));
-        float sinY = (float)Math.sin(Math.toRadians(rot.getY()));
+        float cosY = (float)Math.cos(Math.toRadians(yaw));
+        float sinY = (float)Math.sin(Math.toRadians(yaw));
 
         r.setX(cosY);
         r.setZ(sinY);
         return r;
     }
-    public void getPerspectiveProjection(){
-
-        glEnable(GL_PROJECTION);
-        glLoadIdentity();
-        GLU.gluPerspective(fov, (float) Display.getWidth() / (float)Display.getHeight(), zNear, zFar);
-        glEnable(GL_MODELVIEW);
-    }*/
-
 
 
     public void updateInputs() {
 
-        float speed = 0.1f;
+        float speed = 0.05f;
         float sensibility = 5;
         pitch += (-(Mouse.getDY() / sensibility));
         yaw += (Mouse.getDX() / sensibility);
@@ -65,19 +50,26 @@ public class Camera {
         if(pitch > 90) pitch = 90;
         else if(pitch < -90) pitch = -90;
 
+        if(yaw > 180) yaw -= 360;
+        if(yaw < -180) yaw += 360;
+
         if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)){
             speed *= 2;
         }if(Keyboard.isKeyDown(Keyboard.KEY_Z) || Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)){
-            position.z -= speed;
+            position.x -= getForward().getX() * speed;
+            position.z -= getForward().getZ() * speed;
 
         }if(Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-            position.z += speed;
+            position.x += getForward().getX() * speed;
+            position.z += getForward().getZ() * speed;
 
         }if(Keyboard.isKeyDown(Keyboard.KEY_Q) || Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-            position.x -= speed;
+            position.x -= getRight().getX() * speed;
+            position.z -= getRight().getZ() * speed;
 
         }if(Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-            position.x += speed;
+            position.x += getRight().getX() * speed;
+            position.z += getRight().getZ() * speed;
 
         }if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
             position.y -= speed;;
