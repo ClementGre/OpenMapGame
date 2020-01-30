@@ -49,12 +49,12 @@ public abstract class ShaderProgram {
 //////////////////////////////////////////////////////////////////////////////////////////
 
 
-    protected abstract void getAllUniformLocations(); // ??
-    protected int getUniformLocation(String uniformName){ // Bind les donnés d'une variable sur un nom de variable uniform de shader
+    protected abstract void getAllUniformLocations(); // Demande à la sous-classe de setup ses id de variables uniform (Appelé dans le constructeur de ShaderProgram)
+    protected int getUniformLocation(String uniformName){ // Renvoie l'id d'un nom de variable uniform
         return GL20.glGetUniformLocation(programID, uniformName);
-    } // ??
+    }
 
-/////////////// CHARGER DES VALEURS DANS DES VARIABLES UNIFORM DE SHADERS ///////////////
+/////////////// CHARGER DES VALEURS DANS DES VARIABLES UNIFORM DE SHADERS (à partir de l'id de la variable) ///////////////
 
     protected void loadFloat(int location, float value){
         GL20.glUniform1f(location, value);
@@ -69,7 +69,7 @@ public abstract class ShaderProgram {
     protected void loadMatrix(int location, Matrix4f matrix){
         matrix.store(matrixBuffer);
         matrixBuffer.flip();
-        GL20.glUniformMatrix3(location, false, matrixBuffer);
+        GL20.glUniformMatrix4(location, false, matrixBuffer);
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////

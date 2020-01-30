@@ -88,10 +88,13 @@ public class Loader {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    public int loadTexture(String fileName){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
+    public int loadTexture(String fileName){
+        return loadTexturePath("res/textures/" + fileName);
+    }
+    public int loadTexturePath(String path){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
         Texture texture = null;
         try{
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("res/textures/" + fileName));
+            texture = TextureLoader.getTexture("PNG", new FileInputStream(path));
         }catch(IOException e){ e.printStackTrace(); }
 
         int textureID = texture.getTextureID();
