@@ -14,7 +14,6 @@ public class DisplayManager {
 
     private static int width = 1280;
     private static int height = 720;
-    private static int fpsCap = 120;
 
     public static Camera camera;
 
@@ -22,7 +21,6 @@ public class DisplayManager {
 
         if(width != 0) DisplayManager.width = width;
         if(height != 0) DisplayManager.height = height;
-        if(fpsCap != 0) DisplayManager.fpsCap = fpsCap;
 
         ContextAttribs attribs = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
 
@@ -42,9 +40,12 @@ public class DisplayManager {
     }
 
     public static void updateDisplay(){
-
-        Display.sync(DisplayManager.fpsCap);
         Display.update();
+        if(Display.wasResized()){
+            width = Display.getWidth();
+            height = Display.getHeight();
+            glViewport(0, 0, width, height);
+        }
     }
 
     public static void closeDisplay(){

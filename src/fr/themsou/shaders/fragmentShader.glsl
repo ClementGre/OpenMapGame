@@ -22,7 +22,7 @@ void main(void){
     // LAMPE
 
     float nDotl = dot(unitNormal, unitLightVector); // Calcule l'intensité de ressemblance entre la direction pointée des deux vecteurs (Fonction dot), entre la normale et la direction de la lampe
-    float brightness = max(nDotl, 0.0); // max : renvoie la plus grande des deux valeurs : permet de ne pas avoir de valeurs inférieures à 0. Autrement, nDotl == brightness
+    float brightness = max(nDotl, 0.2); // permet de ne pas avoir de valeurs inférieures à 0.2. (Ambient lightning)
 
     vec3 diffuse = brightness * lightColour; // Calcule l'intensité de la couleur diffusé par la lampe.
 
@@ -34,8 +34,8 @@ void main(void){
     float specularFactor = dot(reflectedLightDirection, unitVectorToCamera); // Calcule l'intensité de ressemblance entre la direction pointée des deux vecteurs (Fonction dot), entre le vecteur de reflexion et celui qui pointe vers la camera
     specularFactor = max(specularFactor, 0.0); // Permet de ne pas avoir de valeurs négatives
 
-    float dampedFactor = pow(specularFactor, shineDamper); // pow : met le premier argument à la puissance du second (pow(4, 2) renvoie 4^2 = 16) : shineDamper est la variable qui définis si la différence entre la caméra et le vecteur de reflexion
-    vec3 finalSpecular = dampedFactor * reflectivity * lightColour;
+    float dampedFactor = pow(specularFactor, shineDamper); // pow : met le premier argument à la puissance du second (pow(4, 2) renvoie 4^2 = 16) : shineDamper est la variable qui définis si le seuil de la taille du reflet, plus il est petit, plus le reflet seras grand
+    vec3 finalSpecular = dampedFactor * reflectivity * lightColour; // On multiplie les rgb values de la couleurs de base par les accentiateurs.
 
     out_Color = vec4(diffuse, 1.0) * texture(textureSample, pass_textureCoord) + vec4(finalSpecular, 1.0); // Définis la couleur finale du pixel en fonction de la texture, de la lampe et du reflet (addition).
 
