@@ -42,7 +42,7 @@ public class Camera {
 
     public void updateInputs() {
 
-        float speed = 0.05f;
+        float speed = 0.1f;
         float sensibility = 5;
         pitch += (-(Mouse.getDY() / sensibility));
         yaw += (Mouse.getDX() / sensibility);
