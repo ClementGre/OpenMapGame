@@ -5,7 +5,14 @@
 **Mon but pour cette application 3D (OpenGL avec LWJGL) est de faire un open map (une ville) dans laquelle on pourait se déplacer**
 
 Cette application est seulement ma 2nde avec LWJGL donc j'espère que je pourait faire tout ce dont j'ai envie avec.
-Je 
+
+## L'organisation du code
+
+Afin d'expliquer plus facilement l'organisation du code de ce projet, j'ai créé un schéma.
+
+Schéma du 7 Février 2020 :
+
+![Preview](https://raw.githubusercontent.com/themsou/OpenMapGame/master/Code_organization.png)
 
 ## Les APIs
 
