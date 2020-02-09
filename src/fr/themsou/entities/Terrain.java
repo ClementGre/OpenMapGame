@@ -1,8 +1,8 @@
-package fr.themsou.terrains;
+package fr.themsou.entities;
 
 import fr.themsou.models.RawModel;
 import fr.themsou.renderEngine.Loader;
-import fr.themsou.textures.ModelTexture;
+import fr.themsou.models.ModelTexture;
 
 public class Terrain {
 

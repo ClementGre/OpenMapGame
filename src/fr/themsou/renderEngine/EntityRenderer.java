@@ -1,7 +1,7 @@
 package fr.themsou.renderEngine;
 
 import fr.themsou.entities.Entity;
-import fr.themsou.textures.ModelTexture;
+import fr.themsou.models.ModelTexture;
 import fr.themsou.utils.Maths;
 import fr.themsou.models.RawModel;
 import fr.themsou.models.TexturedModel;

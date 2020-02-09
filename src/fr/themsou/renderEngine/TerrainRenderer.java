@@ -2,8 +2,8 @@ package fr.themsou.renderEngine;
 
 import fr.themsou.models.RawModel;
 import fr.themsou.shaders.TerrainShader;
-import fr.themsou.terrains.Terrain;
-import fr.themsou.textures.ModelTexture;
+import fr.themsou.entities.Terrain;
+import fr.themsou.models.ModelTexture;
 import fr.themsou.utils.Maths;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -13,7 +13,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.List;
-import java.util.Map;
 
 public class TerrainRenderer {
 
@@ -52,6 +51,9 @@ public class TerrainRenderer {
         GL20.glEnableVertexAttribArray(2); // Bind le VBO des normales
 
         ModelTexture texture = terrain.getTexture();
+        if(texture.isHasTransparency()){
+            MasterRenderer.disableCulling();
+        }else MasterRenderer.enableCulling();
         shader.loadShineVariables(texture.getShineDumper(), texture.getReflectivity());
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);

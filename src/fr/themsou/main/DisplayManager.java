@@ -1,4 +1,4 @@
-package fr.themsou.renderEngine;
+package fr.themsou.main;
 
 import fr.themsou.entities.Camera;
 import org.lwjgl.LWJGLException;
@@ -49,7 +49,6 @@ public class DisplayManager {
     }
 
     public static void closeDisplay(){
-
         Display.destroy();
     }
 

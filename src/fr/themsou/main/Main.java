@@ -1,6 +1,5 @@
 package fr.themsou.main;
 
-import fr.themsou.renderEngine.DisplayManager;
 import fr.themsou.renderEngine.Loader;
 
 public class Main {

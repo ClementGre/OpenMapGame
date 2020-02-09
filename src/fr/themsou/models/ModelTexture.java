@@ -1,9 +1,9 @@
-package fr.themsou.textures;
+package fr.themsou.models;
 
 public class ModelTexture {
 
     private int textureID;
-    private float shineDumper = 1;
+    private float shineDumper = 0;
     private float reflectivity = 0;
 
     private boolean hasTransparency = false;
@@ -11,6 +11,10 @@ public class ModelTexture {
 
     public ModelTexture(int id){
         this.textureID = id;
+    }
+    public ModelTexture(int id, int sample){
+        this.textureID = id;
+        TextureSample.applySample(this, sample);
     }
 
     public ModelTexture(int id, boolean hasTransparency){

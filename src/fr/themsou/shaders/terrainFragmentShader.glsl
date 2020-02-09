@@ -4,10 +4,12 @@ in vec2 pass_textureCoord;
 in vec3 surfaceNormal;
 in vec3 toLightVector;
 in vec3 toCameraVector;
+in float visibility;
 
 out vec4 out_Color;
 
 uniform sampler2D textureSample;
+uniform vec3 skyColour;
 uniform vec3 lightColour;
 uniform float shineDamper;
 uniform float reflectivity;
@@ -22,7 +24,7 @@ void main(void){
     // LAMPE
 
     float nDotl = (dot(unitNormal, unitLightVector)+1.5) / 2; // Calcule l'intensité de ressemblance entre la direction pointée des deux vecteurs (Fonction dot), entre la normale et la direction de la lampe
-    float brightness = max(min(1.2, nDotl), 0.2); // permet de ne pas avoir de valeurs inférieures à 0.2. (Ambient lightning)
+    float brightness = clamp(nDotl, 0.2, 1.2); // permet de ne pas avoir de valeurs inférieures à 0.2. (Ambient lightning)
 
     vec3 diffuse = brightness * lightColour; // Calcule l'intensité de la couleur diffusé par la lampe.
 
@@ -38,5 +40,6 @@ void main(void){
     vec3 finalSpecular = dampedFactor * reflectivity * lightColour; // On multiplie les rgb values de la couleurs de base par les accentiateurs.
 
     out_Color = vec4(diffuse, 1.0) * texture(textureSample, pass_textureCoord) + vec4(finalSpecular, 1.0); // Définis la couleur finale du pixel en fonction de la texture, de la lampe et du reflet (addition).
+    out_Color = mix(vec4(skyColour, 1), out_Color, visibility); // Mélange la couleur du fog avec la couleur finale en fonction de la visibility
 
 }

@@ -1,7 +1,7 @@
 package fr.themsou.renderEngine;
 
 import fr.themsou.models.RawModel;
-import fr.themsou.textures.ModelTexture;
+import fr.themsou.models.ModelTexture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -89,16 +89,13 @@ public class Loader {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    public ModelTexture loadTexture(String fileName){
-        return loadTexturePath("res/textures/" + fileName);
+    public ModelTexture loadModelTexture(String modelName, String fileName, int sample){
+        return loadTexturePath("res/model/" + modelName + "/" + (fileName == null ? "texture.png" : fileName), sample);
     }
-    public ModelTexture loadTexture(String fileName, float shineDamper, float reflectivity){
-        return loadTexturePath("res/textures/" + fileName, shineDamper, reflectivity);
+    public ModelTexture loadTexture(String fileName, int sample){
+        return loadTexturePath("res/textures/" + fileName, sample);
     }
-    public ModelTexture loadTexturePath(String path){
-        return loadTexturePath(path, 40, 0.1f);
-    }
-    public ModelTexture loadTexturePath(String path, float shineDamper, float reflectivity){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
+    public ModelTexture loadTexturePath(String path, int sample){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
         Texture texture = null;
         try{
             texture = TextureLoader.getTexture("PNG", new FileInputStream(path));
@@ -107,9 +104,7 @@ public class Loader {
         int textureID = texture.getTextureID();
         textures.add(textureID);
 
-        ModelTexture modelTexture = new ModelTexture(textureID);
-        modelTexture.setShineDumper(shineDamper);
-        modelTexture.setReflectivity(reflectivity);
+        ModelTexture modelTexture = new ModelTexture(textureID, sample);
         return modelTexture;
     }
 

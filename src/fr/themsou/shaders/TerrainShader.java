@@ -1,7 +1,7 @@
 package fr.themsou.shaders;
 
 import fr.themsou.entities.Camera;
-import fr.themsou.entities.Light;
+import fr.themsou.entities.Sky;
 import fr.themsou.utils.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -17,6 +17,7 @@ public class TerrainShader extends  ShaderProgram {
     private int location_lightColour;
     private int location_shineDamper;
     private int location_reflectivity;
+    private int location_skyColour;
 
     public TerrainShader(){
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -40,6 +41,7 @@ public class TerrainShader extends  ShaderProgram {
         location_lightColour = super.getUniformLocation("lightColour");
         location_shineDamper = super.getUniformLocation("shineDamper");
         location_reflectivity = super.getUniformLocation("reflectivity");
+        location_skyColour = super.getUniformLocation("skyColour");
     }
 
 /////////////// Charge les variables dans les variable uniform dont on a définis les ID plus haut ///////////////
@@ -54,10 +56,10 @@ public class TerrainShader extends  ShaderProgram {
         super.loadMatrix(location_viewMatrix, Maths.createViewMatrix(camera));
     }
 
-    public void loadLight(Light light){
-
-        super.loadVector(location_lightColour, light.getColour());
-        super.loadVector(location_lightPosition, light.getPosition());
+    public void loadSky(Sky sky){
+        super.loadVector(location_lightColour, sky.getSun().getColour());
+        super.loadVector(location_lightPosition, sky.getSun().getPosition());
+        super.loadVector(location_skyColour, sky.getColour());
     }
 
     public void loadShineVariables(float damper, float reflectivity){

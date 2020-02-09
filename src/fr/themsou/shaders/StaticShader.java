@@ -1,8 +1,8 @@
 package fr.themsou.shaders;
 
 import fr.themsou.entities.Camera;
-import fr.themsou.entities.Light;
-import fr.themsou.textures.ModelTexture;
+import fr.themsou.entities.Sky;
+import fr.themsou.models.ModelTexture;
 import fr.themsou.utils.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -20,6 +20,7 @@ public class StaticShader extends  ShaderProgram {
     private int location_reflectivity;
     private int location_useFakeLightning;
     private int location_useLightningShader;
+    private int location_skyColour;
 
     public StaticShader(){
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -45,6 +46,7 @@ public class StaticShader extends  ShaderProgram {
         location_reflectivity = super.getUniformLocation("reflectivity");
         location_useFakeLightning = super.getUniformLocation("useFakeLightning");
         location_useLightningShader = super.getUniformLocation("useLightningShader");
+        location_skyColour = super.getUniformLocation("skyColour");
     }
 
 /////////////// Charge les variables dans les variable uniform dont on a définis les ID plus haut ///////////////
@@ -59,10 +61,10 @@ public class StaticShader extends  ShaderProgram {
         super.loadMatrix(location_viewMatrix, Maths.createViewMatrix(camera));
     }
 
-    public void loadLight(Light light){
-
-        super.loadVector(location_lightColour, light.getColour());
-        super.loadVector(location_lightPosition, light.getPosition());
+    public void loadSky(Sky sky){
+        super.loadVector(location_lightColour, sky.getSun().getColour());
+        super.loadVector(location_lightPosition, sky.getSun().getPosition());
+        super.loadVector(location_skyColour, sky.getColour());
     }
 
     public void loadModelTextureSettings(ModelTexture texture){

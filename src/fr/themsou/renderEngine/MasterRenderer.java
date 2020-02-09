@@ -2,11 +2,11 @@ package fr.themsou.renderEngine;
 
 import fr.themsou.entities.Camera;
 import fr.themsou.entities.Entity;
-import fr.themsou.entities.Light;
+import fr.themsou.main.Main;
 import fr.themsou.models.TexturedModel;
 import fr.themsou.shaders.StaticShader;
 import fr.themsou.shaders.TerrainShader;
-import fr.themsou.terrains.Terrain;
+import fr.themsou.entities.Terrain;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -47,14 +47,14 @@ public class MasterRenderer {
         GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
-    public void render(Light sun, Camera camera){
+    public void render(Camera camera){
 
         prepare();
 
         // EntityRenderer
 
         shader.start();
-        shader.loadLight(sun);
+        shader.loadSky(Main.mainLoop.sky);
         shader.loadViewMatrix(camera);
 
         renderer.render(entities);
@@ -65,7 +65,7 @@ public class MasterRenderer {
         // TerrainRenderer
 
         terrainShader.start();
-        terrainShader.loadLight(sun);
+        terrainShader.loadSky(Main.mainLoop.sky);
         terrainShader.loadViewMatrix(camera);
 
         terrainRenderer.render(terrains);
@@ -79,7 +79,7 @@ public class MasterRenderer {
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(0.0f, 1f,1f, 1);
+        GL11.glClearColor(Main.mainLoop.sky.getColour().x, Main.mainLoop.sky.getColour().y, Main.mainLoop.sky.getColour().z, 1);
     }
 
     public void processEntity(Entity entity){ // Ajoute une entity dans la liste des entités à rendre

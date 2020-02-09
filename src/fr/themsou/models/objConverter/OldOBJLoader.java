@@ -1,7 +1,8 @@
-package fr.themsou.renderEngine;
+package fr.themsou.models.objConverter;
 
 import fr.themsou.main.Main;
-import fr.themsou.textures.ModelTexture;
+import fr.themsou.renderEngine.Loader;
+import fr.themsou.models.ModelTexture;
 import fr.themsou.models.RawModel;
 import fr.themsou.models.TexturedModel;
 import org.lwjgl.util.vector.Vector2f;
@@ -14,17 +15,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OBJLoader {
+public class OldOBJLoader {
 
-    public static TexturedModel loadObjTexturedModel(String modelName, Loader loader){
+    public static TexturedModel loadObjTexturedModel(String modelName, Loader loader, int sample){
 
-        return loadObjTexturedModel(modelName, loader, 40, 0.5f);
-
-    }
-    public static TexturedModel loadObjTexturedModel(String modelName, Loader loader, float shineDamper, float reflectivity){
-
-        RawModel model = OBJLoader.loadObjModel(modelName, Main.loader);
-        ModelTexture texture = Main.loader.loadTexturePath("res/obj/" + modelName + "/texture.png", shineDamper, reflectivity);
+        RawModel model = OldOBJLoader.loadObjModel(modelName, Main.loader);
+        ModelTexture texture = Main.loader.loadTexturePath("res/model/" + modelName + "/texture.png", sample);
         return new TexturedModel(model, texture);
     }
 
@@ -32,7 +28,7 @@ public class OBJLoader {
 
         FileReader fr = null;
         try{
-            fr = new FileReader(new File("res/obj/" + modelName + "/model.obj"));
+            fr = new FileReader(new File("res/model/" + modelName + "/model.obj"));
         }catch(FileNotFoundException e){
             System.err.println("Couldn't load file !");
             e.printStackTrace();
