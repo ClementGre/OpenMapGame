@@ -18,11 +18,14 @@ public class OBJLoader {
 
     public static TexturedModel loadObjTexturedModel(String modelName, Loader loader){
 
+        return loadObjTexturedModel(modelName, loader, 40, 0.5f);
+
+    }
+    public static TexturedModel loadObjTexturedModel(String modelName, Loader loader, float shineDamper, float reflectivity){
+
         RawModel model = OBJLoader.loadObjModel(modelName, Main.loader);
-        ModelTexture texture = new ModelTexture(Main.loader.loadTexturePath("res/obj/" + modelName + "/texture.png"));
-
+        ModelTexture texture = Main.loader.loadTexturePath("res/obj/" + modelName + "/texture.png", shineDamper, reflectivity);
         return new TexturedModel(model, texture);
-
     }
 
     public static RawModel loadObjModel(String modelName, Loader loader){

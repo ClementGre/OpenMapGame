@@ -21,8 +21,8 @@ void main(void){
 
     // LAMPE
 
-    float nDotl = dot(unitNormal, unitLightVector); // Calcule l'intensité de ressemblance entre la direction pointée des deux vecteurs (Fonction dot), entre la normale et la direction de la lampe
-    float brightness = max(nDotl, 0.2); // permet de ne pas avoir de valeurs inférieures à 0.2. (Ambient lightning)
+    float nDotl = (dot(unitNormal, unitLightVector)+1.5) / 2; // Calcule l'intensité de ressemblance entre la direction pointée des deux vecteurs (Fonction dot), entre la normale et la direction de la lampe
+    float brightness = max(min(1.2, nDotl), 0.2); // permet de ne pas avoir de valeurs inférieures à 0.2. (Ambient lightning)
 
     vec3 diffuse = brightness * lightColour; // Calcule l'intensité de la couleur diffusé par la lampe.
 

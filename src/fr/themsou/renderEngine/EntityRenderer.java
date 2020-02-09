@@ -50,7 +50,12 @@ public class EntityRenderer {
         GL20.glEnableVertexAttribArray(2); // Bind le VBO des normales
 
         ModelTexture texture = texturedModel.getTexture();
-        shader.loadShineVariables(texture.getShineDumper(), texture.getReflectivity());
+        if(texture.isHasTransparency()){
+            MasterRenderer.disableCulling();
+        }else MasterRenderer.enableCulling();
+        // SHADER Settings
+
+        shader.loadModelTextureSettings(texture);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getTexture().getID());

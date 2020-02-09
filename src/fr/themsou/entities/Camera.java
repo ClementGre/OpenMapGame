@@ -1,5 +1,6 @@
 package fr.themsou.entities;
 
+import fr.themsou.main.MainLoopManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
@@ -11,6 +12,7 @@ public class Camera {
     private float yaw;
     private float roll;
 
+    private float total = 0;
 
     public Camera(Vector3f position) {
         this.setPosition(position);
@@ -42,19 +44,22 @@ public class Camera {
 
     public void updateInputs() {
 
-        float speed = 0.1f;
+        // POSITION
+
+        float speed = 5.6f / MainLoopManager.IPS;
         float sensibility = 5;
+
         pitch += (-(Mouse.getDY() / sensibility));
         yaw += (Mouse.getDX() / sensibility);
-
         if(pitch > 90) pitch = 90;
         else if(pitch < -90) pitch = -90;
-
         if(yaw > 180) yaw -= 360;
         if(yaw < -180) yaw += 360;
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)){
-            speed *= 2;
+            speed *= 10;
+        }if(Keyboard.isKeyDown(Keyboard.KEY_E)){
+            speed /= 10;
         }if(Keyboard.isKeyDown(Keyboard.KEY_Z) || Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)){
             position.x -= getForward().getX() * speed;
             position.z -= getForward().getZ() * speed;
@@ -76,6 +81,13 @@ public class Camera {
 
         }if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
             position.y += speed;
+
+        }
+
+        // MACRO
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_RCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_C)){
+            position = new Vector3f(100, 1.5f, 50);
 
         }
 

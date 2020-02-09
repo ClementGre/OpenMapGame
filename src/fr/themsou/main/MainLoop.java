@@ -7,7 +7,6 @@ import fr.themsou.renderEngine.DisplayManager;
 import fr.themsou.renderEngine.MasterRenderer;
 import fr.themsou.renderEngine.OBJLoader;
 import fr.themsou.terrains.Terrain;
-import fr.themsou.textures.ModelTexture;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
@@ -26,24 +25,42 @@ public class MainLoop extends MainLoopManager {
 
     public void setup(){
 
-        light = new Light(new Vector3f(-10000f, 10000f, -10000f), new Vector3f(0.9f, 0.86f, 0.66f));
+        light = new Light(new Vector3f(800, 200, 200), new Vector3f(0.9f, 0.86f, 0.66f));
+        DisplayManager.camera.setPosition(new Vector3f(100, 1.5f, 50));
 
-        TexturedModel model = OBJLoader.loadObjTexturedModel("stall", Main.loader);
-        model.getTexture().setShineDumper(20);
-        model.getTexture().setReflectivity(0.7f);
+        TexturedModel sun = OBJLoader.loadObjTexturedModel("Sun", Main.loader, 0, 0);
+        entities.add(new Entity(sun, light.getPosition(), 0, 0, 0, 20));
+
+        TexturedModel tree = OBJLoader.loadObjTexturedModel("Tree", Main.loader);
+        TexturedModel highTree = OBJLoader.loadObjTexturedModel("HighTree", Main.loader);
+
+        TexturedModel grass = OBJLoader.loadObjTexturedModel("Grass", Main.loader, 40, 0.2f);
+        grass.getTexture().setUseFakeLightning(true);
+        grass.getTexture().setHasTransparency(true);
+        TexturedModel fern = OBJLoader.loadObjTexturedModel("Fern", Main.loader, 40, 0.2f);
+        fern.getTexture().setUseFakeLightning(true);
+        fern.getTexture().setHasTransparency(true);
 
         Random r = new Random();
-        for(int i = 0; i <= 100; i++){
-            Entity stall = new Entity(model, new Vector3f((r.nextFloat()-0.5f) * 1, (r.nextFloat()-0.5f) * 1, (r.nextFloat()-0.5f) * 1),
-                    r.nextFloat() * 360, r.nextFloat() * 360, r.nextFloat() * 360, r.nextFloat()*0.5f);
-            entities.add(stall);
+        for(int i = 0; i <= 150; i++){
+            Entity entity = new Entity(tree, new Vector3f(10 + r.nextFloat() * 180, 0, 10 + r.nextFloat() * 80), 0, r.nextFloat() * 360, 0, 1f);
+            entities.add(entity);
+        }
+        for(int i = 0; i <= 150; i++){
+            Entity entity = new Entity(highTree, new Vector3f(10 + r.nextFloat() * 180, 0, 10 + r.nextFloat() * 80), 0, r.nextFloat() * 360, 0, 0.15f);
+            entities.add(entity);
+        }
+        for(int i = 0; i <= 150; i++){
+            Entity entity = new Entity(grass, new Vector3f(10 + r.nextFloat() * 180, 0, 10 + r.nextFloat() * 80), 0, r.nextFloat() * 360, 0, 0.4f);
+            entities.add(entity);
+        }
+        for(int i = 0; i <= 200; i++){
+            Entity entity = new Entity(fern, new Vector3f(10 + r.nextFloat() * 180, 0, 10 + r.nextFloat() * 80), 0, r.nextFloat() * 360, 0, 0.2f);
+            entities.add(entity);
         }
 
-        Entity stall = new Entity(model, new Vector3f(20, 0, 20), 0, 0, 0, 1);
-        entities.add(stall);
-
-        Terrain terrain = new Terrain(0, 0, Main.loader, new ModelTexture(Main.loader.loadTexture("planks.png")));
-        Terrain terrain2 = new Terrain(1, 0, Main.loader, new ModelTexture(Main.loader.loadTexture("planks.png")));
+        Terrain terrain = new Terrain(0, 0, Main.loader, Main.loader.loadTexture("grass.png"));
+        Terrain terrain2 = new Terrain(1, 0, Main.loader, Main.loader.loadTexture("grass.png"));
         terrains.add(terrain);
         terrains.add(terrain2);
 
@@ -64,11 +81,10 @@ public class MainLoop extends MainLoopManager {
     }
     public void updateLogic(){
 
-        if(new Random().nextInt(10) == 0){
-            DisplayManager.setTitle("OpenMapGame - " + DisplayManager.camera.getPosition() +
-                    " [" + ((int)DisplayManager.camera.getPitch()) + ";" + ((int)DisplayManager.camera.getYaw()) + "] - "
-                    + fps + "fps - " + tps + "tps - " + ips + "ips");
-        }
+        DisplayManager.setTitle("OpenMapGame - " + DisplayManager.camera.getPosition() +
+                " [" + ((int)DisplayManager.camera.getPitch()) + ";" + ((int)DisplayManager.camera.getYaw()) + "] - "
+                + fps + "fps - " + tps + "tps - " + ips + "ips");
+
 
     }
     public void updateRender(){

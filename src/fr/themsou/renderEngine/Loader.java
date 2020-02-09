@@ -1,6 +1,7 @@
 package fr.themsou.renderEngine;
 
 import fr.themsou.models.RawModel;
+import fr.themsou.textures.ModelTexture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -34,7 +35,6 @@ public class Loader {
         GL30.glBindVertexArray(0); // Unbind le VAO
 
         return new RawModel(vaoID, indices.length);
-
     }
 
 //////////////////////////////////// ENREGISTREMENT DES VBO /////////////////////////////////////
@@ -89,10 +89,16 @@ public class Loader {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-    public int loadTexture(String fileName){
+    public ModelTexture loadTexture(String fileName){
         return loadTexturePath("res/textures/" + fileName);
     }
-    public int loadTexturePath(String path){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
+    public ModelTexture loadTexture(String fileName, float shineDamper, float reflectivity){
+        return loadTexturePath("res/textures/" + fileName, shineDamper, reflectivity);
+    }
+    public ModelTexture loadTexturePath(String path){
+        return loadTexturePath(path, 40, 0.1f);
+    }
+    public ModelTexture loadTexturePath(String path, float shineDamper, float reflectivity){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
         Texture texture = null;
         try{
             texture = TextureLoader.getTexture("PNG", new FileInputStream(path));
@@ -100,7 +106,11 @@ public class Loader {
 
         int textureID = texture.getTextureID();
         textures.add(textureID);
-        return textureID;
+
+        ModelTexture modelTexture = new ModelTexture(textureID);
+        modelTexture.setShineDumper(shineDamper);
+        modelTexture.setReflectivity(reflectivity);
+        return modelTexture;
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////

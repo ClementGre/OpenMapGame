@@ -2,6 +2,7 @@ package fr.themsou.shaders;
 
 import fr.themsou.entities.Camera;
 import fr.themsou.entities.Light;
+import fr.themsou.textures.ModelTexture;
 import fr.themsou.utils.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -17,6 +18,8 @@ public class StaticShader extends  ShaderProgram {
     private int location_lightColour;
     private int location_shineDamper;
     private int location_reflectivity;
+    private int location_useFakeLightning;
+    private int location_useLightningShader;
 
     public StaticShader(){
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -40,6 +43,8 @@ public class StaticShader extends  ShaderProgram {
         location_lightColour = super.getUniformLocation("lightColour");
         location_shineDamper = super.getUniformLocation("shineDamper");
         location_reflectivity = super.getUniformLocation("reflectivity");
+        location_useFakeLightning = super.getUniformLocation("useFakeLightning");
+        location_useLightningShader = super.getUniformLocation("useLightningShader");
     }
 
 /////////////// Charge les variables dans les variable uniform dont on a définis les ID plus haut ///////////////
@@ -60,8 +65,10 @@ public class StaticShader extends  ShaderProgram {
         super.loadVector(location_lightPosition, light.getPosition());
     }
 
-    public void loadShineVariables(float damper, float reflectivity){
-        super.loadFloat(location_shineDamper, damper);
-        super.loadFloat(location_reflectivity, reflectivity);
+    public void loadModelTextureSettings(ModelTexture texture){
+        super.loadBoolean(location_useFakeLightning, texture.isUseFakeLightning());
+        super.loadFloat(location_shineDamper, texture.getShineDumper());
+        super.loadFloat(location_reflectivity, texture.getReflectivity());
+        super.loadBoolean(location_useLightningShader, !(texture.getShineDumper() == 0 && texture.getReflectivity() == 0));
     }
 }

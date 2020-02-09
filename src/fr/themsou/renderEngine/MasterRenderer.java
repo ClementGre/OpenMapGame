@@ -33,12 +33,18 @@ public class MasterRenderer {
 
     public MasterRenderer(){
 
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_BACK);
-
         createProjectionMatrix();
         renderer = new EntityRenderer(shader, projectionMatrix);
         terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+    }
+
+    public static void enableCulling(){
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
+    }
+    public static void disableCulling(){
+        GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
     public void render(Light sun, Camera camera){
@@ -65,6 +71,7 @@ public class MasterRenderer {
         terrainRenderer.render(terrains);
 
         terrainShader.stop();
+        terrains.clear();
 
     }
 
@@ -72,7 +79,7 @@ public class MasterRenderer {
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(0.2f, 0.2f,0.2f, 1);
+        GL11.glClearColor(0.0f, 1f,1f, 1);
     }
 
     public void processEntity(Entity entity){ // Ajoute une entity dans la liste des entités à rendre
