@@ -1,12 +1,10 @@
 package fr.themsou.main;
 
-import fr.themsou.entities.Camera;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.vector.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -14,8 +12,6 @@ public class DisplayManager {
 
     private static int width = 1280;
     private static int height = 720;
-
-    public static Camera camera;
 
     public static void createDisplay(int width, int height, int fpsCap, String title){
 
@@ -35,7 +31,6 @@ public class DisplayManager {
         }catch(LWJGLException e){ e.printStackTrace(); }
 
         glViewport(0, 0, DisplayManager.width,  DisplayManager.height);
-        camera = new Camera(new Vector3f(0, 0, 0));
 
     }
 

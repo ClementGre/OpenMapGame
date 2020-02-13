@@ -1,12 +1,12 @@
 package fr.themsou.renderEngine;
 
-import fr.themsou.entities.Camera;
 import fr.themsou.entities.Entity;
 import fr.themsou.main.Main;
 import fr.themsou.models.TexturedModel;
 import fr.themsou.shaders.StaticShader;
 import fr.themsou.shaders.TerrainShader;
 import fr.themsou.entities.Terrain;
+import fr.themsou.utils.Location;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -47,7 +47,7 @@ public class MasterRenderer {
         GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
-    public void render(Camera camera){
+    public void render(Location renderLocation){
 
         prepare();
 
@@ -55,7 +55,7 @@ public class MasterRenderer {
 
         shader.start();
         shader.loadSky(Main.mainLoop.sky);
-        shader.loadViewMatrix(camera);
+        shader.loadViewMatrix(renderLocation);
 
         renderer.render(entities);
 
@@ -66,7 +66,7 @@ public class MasterRenderer {
 
         terrainShader.start();
         terrainShader.loadSky(Main.mainLoop.sky);
-        terrainShader.loadViewMatrix(camera);
+        terrainShader.loadViewMatrix(renderLocation);
 
         terrainRenderer.render(terrains);
 

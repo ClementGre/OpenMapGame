@@ -1,7 +1,7 @@
 package fr.themsou.shaders;
 
-import fr.themsou.entities.Camera;
 import fr.themsou.entities.Sky;
+import fr.themsou.utils.Location;
 import fr.themsou.utils.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -62,13 +62,13 @@ public class TerrainShader extends  ShaderProgram {
     public void loadProjectionMatrix(Matrix4f matrix){
         super.loadMatrix(location_projectionMatrix, matrix);
     }
-    public void loadViewMatrix(Camera camera){
-        super.loadMatrix(location_viewMatrix, Maths.createViewMatrix(camera));
+    public void loadViewMatrix(Location location){
+        super.loadMatrix(location_viewMatrix, Maths.createViewMatrix(location));
     }
 
     public void loadSky(Sky sky){
         super.loadVector(location_lightColour, sky.getSun().getColour());
-        super.loadVector(location_lightPosition, sky.getSun().getPosition());
+        super.loadVector(location_lightPosition, sky.getSun().getLocation().toVector());
         super.loadVector(location_skyColour, sky.getColour());
     }
 

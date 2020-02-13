@@ -1,21 +1,16 @@
 package fr.themsou.entities;
 
+import fr.themsou.models.TexturedModel;
+import fr.themsou.utils.Location;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Light {
+public class Light extends Entity{
 
-    private Vector3f position;
     private Vector3f colour;
 
-    public Light(Vector3f position, Vector3f colour) {
-        this.position = position;
+    public Light(TexturedModel model, Location location, Vector3f colour, float scale) {
+        super(model, location, scale);
         this.colour = colour;
-    }
-    public Vector3f getPosition() {
-        return position;
-    }
-    public void setPosition(Vector3f position) {
-        this.position = position;
     }
     public Vector3f getColour() {
         return colour;

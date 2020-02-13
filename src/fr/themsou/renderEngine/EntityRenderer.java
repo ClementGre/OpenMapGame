@@ -72,7 +72,7 @@ public class EntityRenderer {
 
     public void loadModelMatrix(Entity entity){
 
-        Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+        Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getLocation().toVector(), entity.getLocation().getPitch(), entity.getLocation().getYaw(), entity.getLocation().getRoll(), entity.getScale());
         shader.loadTransformationMatrix(transformationMatrix); // Charge la transformationMatrix de l'entity dans le shader
 
     }

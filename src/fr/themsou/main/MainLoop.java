@@ -1,8 +1,6 @@
 package fr.themsou.main;
 
-import fr.themsou.entities.Entity;
-import fr.themsou.entities.Light;
-import fr.themsou.entities.Sky;
+import fr.themsou.entities.*;
 import fr.themsou.models.RawModel;
 import fr.themsou.models.textures.TerrainTexture;
 import fr.themsou.models.textures.TerrainTexturePack;
@@ -10,7 +8,7 @@ import fr.themsou.models.textures.TextureSample;
 import fr.themsou.models.TexturedModel;
 import fr.themsou.models.objConverter.OBJFileLoader;
 import fr.themsou.renderEngine.MasterRenderer;
-import fr.themsou.entities.Terrain;
+import fr.themsou.utils.Location;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
@@ -27,13 +25,20 @@ public class MainLoop extends MainLoopManager {
     public MasterRenderer renderer = new MasterRenderer();
     public Sky sky;
 
+    public Player player;
+
     public void setup(){
 
-        sky = new Sky(new Vector3f(0.0f, 1f,1f), new Light(new Vector3f(800, 200, 200), new Vector3f(0.9f, 0.86f, 0.66f)));
         TexturedModel sun = OBJFileLoader.loadOBJToTexturedModel("Sun", -1);
         sun.getTexture().setReflectivity(0); sun.getTexture().setReflectivity(0);
-        entities.add(new Entity(sun, sky.getSun().getPosition(), 0, 0, 0, 20));
+        sky = new Sky(new Vector3f(0.0f, 1f,1f), new Light(sun, new Location(800, 200, 200), new Vector3f(0.9f, 0.86f, 0.66f), 40f));
+        entities.add(sky.getSun());
 
+        RawModel playerModel = OBJFileLoader.loadOBJToRawModel("Player");
+        TexturedModel playerTexturedModel = new TexturedModel(playerModel, Main.loader.loadModelTexture("Player", null, TextureSample.SIMPLEOBJ_SAMPLE));
+
+        player = new Player(playerTexturedModel, new Location(100, 0f, 50), 0.2f);
+        entities.add(player);
 
         RawModel treeModel = OBJFileLoader.loadOBJToRawModel("Tree");
         RawModel highTreeModel = OBJFileLoader.loadOBJToRawModel("HighTree");
@@ -58,19 +63,19 @@ public class MainLoop extends MainLoopManager {
 
             Random r = new Random();
             for(int k = 0; k <= 150; k++){
-                Entity entity = new Entity(tree, new Vector3f(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100), 0, r.nextFloat() * 360, 0, 1f);
+                Entity entity = new Entity(tree, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 1f);
                 entities.add(entity);
             }
             for(int k = 0; k <= 150; k++){
-                Entity entity = new Entity(highTree, new Vector3f(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100), 0, r.nextFloat() * 360, 0, 0.15f);
+                Entity entity = new Entity(highTree, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 0.15f);
                 entities.add(entity);
             }
             for(int k = 0; k <= 150; k++){
-                Entity entity = new Entity(grass, new Vector3f(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100), 0, r.nextFloat() * 360, 0, 0.4f);
+                Entity entity = new Entity(grass, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 0.4f);
                 entities.add(entity);
             }
             for(int k = 0; k <= 200; k++){
-                Entity entity = new Entity(fern, new Vector3f(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100), 0, r.nextFloat() * 360, 0, 0.2f);
+                Entity entity = new Entity(fern, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 0.2f);
                 entities.add(entity);
             }
 
@@ -78,7 +83,6 @@ public class MainLoop extends MainLoopManager {
             terrains.add(terrain);
         }
 
-        DisplayManager.camera.setPosition(new Vector3f(100, 1.5f, 50));
     }
     public void close(){
         renderer.cleanUp();
@@ -90,15 +94,16 @@ public class MainLoop extends MainLoopManager {
         if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) Mouse.setGrabbed(false);
         if(Mouse.isButtonDown(0)) Mouse.setGrabbed(true);
         if(Mouse.isGrabbed()){
-            DisplayManager.camera.updateInputs();
+            player.updateInputs();
         }
 
     }
     public void updateLogic(){
 
-        DisplayManager.setTitle("OpenMapGame - " + DisplayManager.camera.getPosition() +
-                " [" + ((int)DisplayManager.camera.getPitch()) + ";" + ((int)DisplayManager.camera.getYaw()) + "] - "
-                + fps + "fps - " + tps + "tps - " + ips + "ips");
+        DisplayManager.setTitle("OpenMapGame - " +
+                "[" + ((int)player.getLocation().getX()) + ";" + ((int)player.getLocation().getY()) + ";" + ((int)player.getLocation().getZ()) + "]" +
+                " [" + ((int)player.getLocation().getYaw()) + ";" + ((int)player.getViewPitch()) + ";" + ((int)player.getLocation().getRoll()) + "] - "
+                + fps + "fps - " + tps + "tps - " + ips + "ips - ViewMode=" + player.viewMode);
 
 
     }
@@ -110,7 +115,8 @@ public class MainLoop extends MainLoopManager {
         for(Entity entity : entities){
             renderer.processEntity(entity);
         }
-        renderer.render(DisplayManager.camera);
+
+        renderer.render(player.getViewLocation());
 
         DisplayManager.updateDisplay();
 
