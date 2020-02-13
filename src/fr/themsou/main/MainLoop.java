@@ -4,7 +4,9 @@ import fr.themsou.entities.Entity;
 import fr.themsou.entities.Light;
 import fr.themsou.entities.Sky;
 import fr.themsou.models.RawModel;
-import fr.themsou.models.TextureSample;
+import fr.themsou.models.textures.TerrainTexture;
+import fr.themsou.models.textures.TerrainTexturePack;
+import fr.themsou.models.textures.TextureSample;
 import fr.themsou.models.TexturedModel;
 import fr.themsou.models.objConverter.OBJFileLoader;
 import fr.themsou.renderEngine.MasterRenderer;
@@ -43,6 +45,13 @@ public class MainLoop extends MainLoopManager {
         TexturedModel grass = new TexturedModel(grassModel, Main.loader.loadModelTexture("Grass", null, TextureSample.TRANSPARENT_SAMPLE));
         TexturedModel fern = new TexturedModel(fernModel, Main.loader.loadModelTexture("Fern", null, TextureSample.TRANSPARENT_SAMPLE));
 
+        TerrainTexture blendMapTexture = Main.loader.loadTerrainTexture("1", "blendMap.png");
+        TerrainTexture backgroundTexture = Main.loader.loadTerrainTexture("1", "background.png");
+        TerrainTexture rTexture = Main.loader.loadTerrainTexture("1", "r.png");
+        TerrainTexture gTexture = Main.loader.loadTerrainTexture("1", "g.png");
+        TerrainTexture bTexture = Main.loader.loadTerrainTexture("1", "b.png");
+        TerrainTexturePack terrainTexturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+
         for(int i = 0; i < 16; i++){
             int indexX = i/4; int indexZ = i%4;
             int xStart = indexX*100; int zStart = indexZ*100;
@@ -64,7 +73,8 @@ public class MainLoop extends MainLoopManager {
                 Entity entity = new Entity(fern, new Vector3f(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100), 0, r.nextFloat() * 360, 0, 0.2f);
                 entities.add(entity);
             }
-            Terrain terrain = new Terrain(indexX, indexZ, Main.loader, Main.loader.loadTexture("grass.png", TextureSample.TERRAIN_SAMPLE));
+
+            Terrain terrain = new Terrain(indexX, indexZ, Main.loader, blendMapTexture, terrainTexturePack);
             terrains.add(terrain);
         }
 

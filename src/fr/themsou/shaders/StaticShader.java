@@ -2,7 +2,7 @@ package fr.themsou.shaders;
 
 import fr.themsou.entities.Camera;
 import fr.themsou.entities.Sky;
-import fr.themsou.models.ModelTexture;
+import fr.themsou.models.textures.ModelTexture;
 import fr.themsou.utils.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 

@@ -1,5 +1,7 @@
 package fr.themsou.models;
 
+import fr.themsou.models.textures.ModelTexture;
+
 public class TexturedModel {
 
     private RawModel rawModel;

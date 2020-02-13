@@ -1,8 +1,9 @@
 package fr.themsou.entities;
 
 import fr.themsou.models.RawModel;
+import fr.themsou.models.textures.TerrainTexture;
+import fr.themsou.models.textures.TerrainTexturePack;
 import fr.themsou.renderEngine.Loader;
-import fr.themsou.models.ModelTexture;
 
 public class Terrain {
 
@@ -14,11 +15,13 @@ public class Terrain {
     private float z;
 
     private RawModel model;
-    private ModelTexture texture;
+    private TerrainTexturePack textures;
+    private TerrainTexture blendMap;
 
-    public Terrain(int gridX, int gridZ, Loader loader, ModelTexture texture){
+    public Terrain(int gridX, int gridZ, Loader loader, TerrainTexture blendMap, TerrainTexturePack textures){
 
-        this.texture = texture;
+        this.blendMap = blendMap;
+        this.textures = textures;
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.model = generateTerrainRawModel(loader);
@@ -89,8 +92,10 @@ public class Terrain {
     public RawModel getModel() {
         return model;
     }
-    public ModelTexture getTexture() {
-        return texture;
+    public TerrainTexturePack getTextures() {
+        return textures;
     }
-
+    public TerrainTexture getBlendMap() {
+        return blendMap;
+    }
 }

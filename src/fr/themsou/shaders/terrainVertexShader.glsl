@@ -25,7 +25,7 @@ void main(void){
     vec4 worldPositionRelativeToCamera = viewMatrix * worldPosition; // Calcule la position de l'objet avec la caméra comme origine (N'utilise pas la projection matrix)
 
     gl_Position = projectionMatrix * viewMatrix * worldPosition; // Définis la position en fonction de la viewMatrix et de la projectionmatrix
-    pass_textureCoord = textureCoord * 100; // Variable qui passe les coordonés de texture pour le fragment shader
+    pass_textureCoord = textureCoord; // Variable qui passe les coordonés de texture pour le fragment shader
     // Multiplie par 20 pour appliquer plusieurs fois la même texture (Répété 20 fois).
 
     surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz; // calcule la normale (réele) du vertex (Variable normal multiplié à la transformationMatrix)

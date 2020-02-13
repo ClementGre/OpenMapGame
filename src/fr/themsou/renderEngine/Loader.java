@@ -1,7 +1,8 @@
 package fr.themsou.renderEngine;
 
 import fr.themsou.models.RawModel;
-import fr.themsou.models.ModelTexture;
+import fr.themsou.models.textures.ModelTexture;
+import fr.themsou.models.textures.TerrainTexture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -89,23 +90,37 @@ public class Loader {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+    // MODEL
     public ModelTexture loadModelTexture(String modelName, String fileName, int sample){
         return loadTexturePath("res/model/" + modelName + "/" + (fileName == null ? "texture.png" : fileName), sample);
     }
     public ModelTexture loadTexture(String fileName, int sample){
         return loadTexturePath("res/textures/" + fileName, sample);
     }
-    public ModelTexture loadTexturePath(String path, int sample){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
+    public ModelTexture loadTexturePath(String path, int sample){ // Instancie un ModelTexture à partir d'un ID de texture
+
+        ModelTexture modelTexture = new ModelTexture(loadTexturePathId(path), sample);
+        return modelTexture;
+    }
+
+    // TERRAIN
+    public TerrainTexture loadTerrainTexture(String terrainName, String fileName){
+        return loadTerrainTexturePath("res/terrains/" + terrainName + "/" + fileName);
+    }
+    public TerrainTexture loadTerrainTexturePath(String path){ // Instancie un terrainTexture à partir d'un ID de texture
+
+        TerrainTexture terrainTexture = new TerrainTexture(loadTexturePathId(path));
+        return terrainTexture;
+    }
+
+    // GENERAL
+    public int loadTexturePathId(String path){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
         Texture texture = null;
         try{
             texture = TextureLoader.getTexture("PNG", new FileInputStream(path));
         }catch(IOException e){ e.printStackTrace(); }
 
-        int textureID = texture.getTextureID();
-        textures.add(textureID);
-
-        ModelTexture modelTexture = new ModelTexture(textureID, sample);
-        return modelTexture;
+        return texture.getTextureID();
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////

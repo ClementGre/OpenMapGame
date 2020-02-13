@@ -1,4 +1,4 @@
-package fr.themsou.models;
+package fr.themsou.models.textures;
 
 public class ModelTexture {
 

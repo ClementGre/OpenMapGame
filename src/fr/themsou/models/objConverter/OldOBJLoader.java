@@ -2,7 +2,7 @@ package fr.themsou.models.objConverter;
 
 import fr.themsou.main.Main;
 import fr.themsou.renderEngine.Loader;
-import fr.themsou.models.ModelTexture;
+import fr.themsou.models.textures.ModelTexture;
 import fr.themsou.models.RawModel;
 import fr.themsou.models.TexturedModel;
 import org.lwjgl.util.vector.Vector2f;
