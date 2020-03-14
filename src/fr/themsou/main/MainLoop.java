@@ -50,7 +50,11 @@ public class MainLoop extends MainLoopManager {
         TexturedModel grass = new TexturedModel(grassModel, Main.loader.loadModelTexture("Grass", null, TextureSample.TRANSPARENT_SAMPLE));
         TexturedModel fern = new TexturedModel(fernModel, Main.loader.loadModelTexture("Fern", null, TextureSample.TRANSPARENT_SAMPLE));
 
+        RawModel boxModel = OBJFileLoader.loadOBJToRawModel("Box");
+        TexturedModel box = new TexturedModel(boxModel, Main.loader.loadModelTexture("Box", null, TextureSample.SIMPLEOBJ_SAMPLE));
+
         TerrainTexture blendMapTexture = Main.loader.loadTerrainTexture("1", "blendMap.png");
+        String heightMapTexture = Main.loader.getTerrainFileName("1", "heightMap.png");
         TerrainTexture backgroundTexture = Main.loader.loadTerrainTexture("1", "background.png");
         TerrainTexture rTexture = Main.loader.loadTerrainTexture("1", "r.png");
         TerrainTexture gTexture = Main.loader.loadTerrainTexture("1", "g.png");
@@ -61,26 +65,40 @@ public class MainLoop extends MainLoopManager {
             int indexX = i/4; int indexZ = i%4;
             int xStart = indexX*100; int zStart = indexZ*100;
 
+            Terrain terrain = new Terrain(indexX, indexZ, Main.loader, blendMapTexture, heightMapTexture, terrainTexturePack);
+            terrains.add(terrain);
+
             Random r = new Random();
             for(int k = 0; k <= 150; k++){
-                Entity entity = new Entity(tree, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 1f);
+                float x = xStart + r.nextFloat() * 100;
+                float z = zStart + r.nextFloat() * 100;
+                Entity entity = new Entity(tree, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 1f);
                 entities.add(entity);
             }
             for(int k = 0; k <= 150; k++){
-                Entity entity = new Entity(highTree, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 0.15f);
+                float x = xStart + r.nextFloat() * 100;
+                float z = zStart + r.nextFloat() * 100;
+                Entity entity = new Entity(highTree, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.15f);
                 entities.add(entity);
             }
             for(int k = 0; k <= 150; k++){
-                Entity entity = new Entity(grass, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 0.4f);
+                float x = xStart + r.nextFloat() * 100;
+                float z = zStart + r.nextFloat() * 100;
+                Entity entity = new Entity(grass, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.4f);
                 entities.add(entity);
             }
             for(int k = 0; k <= 200; k++){
-                Entity entity = new Entity(fern, new Location(xStart + r.nextFloat() * 100, 0, zStart + r.nextFloat() * 100, r.nextFloat() * 360, 0, 0), 0.2f);
+                float x = xStart + r.nextFloat() * 100;
+                float z = zStart + r.nextFloat() * 100;
+                Entity entity = new Entity(fern, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.2f);
                 entities.add(entity);
             }
-
-            Terrain terrain = new Terrain(indexX, indexZ, Main.loader, blendMapTexture, terrainTexturePack);
-            terrains.add(terrain);
+            for(int k = 0; k <= 200; k++){
+                float x = xStart + r.nextFloat() * 100;
+                float z = zStart + r.nextFloat() * 100;
+                Entity entity = new Entity(box, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 1f);
+                entities.add(entity);
+            }
         }
 
     }
