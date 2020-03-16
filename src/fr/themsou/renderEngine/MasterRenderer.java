@@ -5,7 +5,7 @@ import fr.themsou.main.Main;
 import fr.themsou.models.TexturedModel;
 import fr.themsou.shaders.StaticShader;
 import fr.themsou.shaders.TerrainShader;
-import fr.themsou.entities.Terrain;
+import fr.themsou.entities.objectEntity.Terrain;
 import fr.themsou.utils.Location;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;

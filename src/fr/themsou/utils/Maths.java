@@ -44,4 +44,8 @@ public class Maths {
 
         return viewMatrix;
     }
+
+    public static float clamp(float number, float min, float max){
+        return Math.max(min, Math.min(max, number));
+    }
 }

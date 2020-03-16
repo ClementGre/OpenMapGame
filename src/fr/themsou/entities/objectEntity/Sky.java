@@ -1,4 +1,4 @@
-package fr.themsou.entities;
+package fr.themsou.entities.objectEntity;
 
 import org.lwjgl.util.vector.Vector3f;
 

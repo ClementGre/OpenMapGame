@@ -1,6 +1,10 @@
 package fr.themsou.main;
 
 import fr.themsou.entities.*;
+import fr.themsou.entities.livingEntity.ocularEntity.Player;
+import fr.themsou.entities.objectEntity.Light;
+import fr.themsou.entities.objectEntity.Sky;
+import fr.themsou.entities.objectEntity.Terrain;
 import fr.themsou.models.RawModel;
 import fr.themsou.models.textures.TerrainTexture;
 import fr.themsou.models.textures.TerrainTexturePack;
@@ -69,34 +73,34 @@ public class MainLoop extends MainLoopManager {
             terrains.add(terrain);
 
             Random r = new Random();
-            for(int k = 0; k <= 150; k++){
+            for(int k = 0; k <= 75; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
                 Entity entity = new Entity(tree, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 1f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 150; k++){
+            for(int k = 0; k <= 75; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
                 Entity entity = new Entity(highTree, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.15f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 150; k++){
+            for(int k = 0; k <= 75; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
                 Entity entity = new Entity(grass, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.4f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 200; k++){
+            for(int k = 0; k <= 100; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
                 Entity entity = new Entity(fern, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.2f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 200; k++){
+            for(int k = 0; k <= 100; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
-                Entity entity = new Entity(box, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 1f);
+                Entity entity = new Entity(box, new Location(x, terrain.getHeight(x, z)+1, z, r.nextFloat() * 360, 0, 0), 1f);
                 entities.add(entity);
             }
         }
@@ -118,11 +122,10 @@ public class MainLoop extends MainLoopManager {
     }
     public void updateLogic(){
 
-        DisplayManager.setTitle("OpenMapGame - " +
-                "[" + ((int)player.getLocation().getX()) + ";" + ((int)player.getLocation().getY()) + ";" + ((int)player.getLocation().getZ()) + "]" +
-                " [" + ((int)player.getLocation().getYaw()) + ";" + ((int)player.getViewPitch()) + ";" + ((int)player.getLocation().getRoll()) + "] - "
-                + fps + "fps - " + tps + "tps - " + ips + "ips - ViewMode=" + player.viewMode);
-
+            DisplayManager.setTitle("OpenMapGame - " +
+                    "[" + ((int)player.getLocation().getX()) + ";" + ((int)player.getLocation().getY()) + ";" + ((int)player.getLocation().getZ()) + "]" +
+                    " [" + ((int)player.getLocation().getYaw()) + ";" + ((int)player.getViewPitch()) + ";" + ((int)player.getLocation().getRoll()) + "] - "
+                    + fps + "fps - " + tps + "tps - " + ips + "ips - ViewMode=" + player.getViewMode());
 
     }
     public void updateRender(){
@@ -137,6 +140,8 @@ public class MainLoop extends MainLoopManager {
         renderer.render(player.getViewLocation());
 
         DisplayManager.updateDisplay();
+
+
 
     }
 }

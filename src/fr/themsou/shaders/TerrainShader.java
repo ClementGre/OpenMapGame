@@ -1,6 +1,6 @@
 package fr.themsou.shaders;
 
-import fr.themsou.entities.Sky;
+import fr.themsou.entities.objectEntity.Sky;
 import fr.themsou.utils.Location;
 import fr.themsou.utils.Maths;
 import org.lwjgl.util.vector.Matrix4f;

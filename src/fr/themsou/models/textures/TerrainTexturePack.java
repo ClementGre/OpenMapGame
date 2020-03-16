@@ -1,7 +1,5 @@
 package fr.themsou.models.textures;
 
-import fr.themsou.entities.Terrain;
-
 public class TerrainTexturePack {
 
     private TerrainTexture backgroundTexture;

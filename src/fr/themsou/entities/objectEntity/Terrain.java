@@ -1,4 +1,4 @@
-package fr.themsou.entities;
+package fr.themsou.entities.objectEntity;
 
 import fr.themsou.models.RawModel;
 import fr.themsou.models.textures.TerrainTexture;

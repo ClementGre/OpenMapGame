@@ -1,6 +1,6 @@
 package fr.themsou.shaders;
 
-import fr.themsou.entities.Sky;
+import fr.themsou.entities.objectEntity.Sky;
 import fr.themsou.models.textures.ModelTexture;
 import fr.themsou.utils.Location;
 import fr.themsou.utils.Maths;

@@ -1,10 +1,11 @@
-package fr.themsou.entities;
+package fr.themsou.entities.objectEntity;
 
+import fr.themsou.entities.Entity;
 import fr.themsou.models.TexturedModel;
 import fr.themsou.utils.Location;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Light extends Entity{
+public class Light extends Entity {
 
     private Vector3f colour;
 
