@@ -67,9 +67,9 @@ public class TerrainShader extends  ShaderProgram {
     }
 
     public void loadSky(Sky sky){
-        super.loadVector(location_lightColour, sky.getSun().getColour());
-        super.loadVector(location_lightPosition, sky.getSun().getLocation().toVector());
-        super.loadVector(location_skyColour, sky.getColour());
+        super.load3dVector(location_lightColour, sky.getSun().getColour());
+        super.load3dVector(location_lightPosition, sky.getSun().getLocation().toVector());
+        super.load3dVector(location_skyColour, sky.getColour());
     }
 
     public void loadShineVariables(float damper, float reflectivity){

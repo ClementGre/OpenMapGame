@@ -20,7 +20,6 @@ public class Terrain {
     private static final int MAX_PIXEL_COLOUR = 256*256*256;
 
     private float x;
-    private float y;
     private float z;
 
     private RawModel model;
@@ -46,7 +45,7 @@ public class Terrain {
         float terrainZ = z - this.z;
 
         float gridSquareSize = SIZE / (heights.length - 1f);
-        int gridX = (int) Math.floor(terrainX / gridSquareSize);
+        int gridX = (int) Math.floor(terrainX / gridSquareSize); // Coordonés du vertex sur le nombre de vertex dans le terrain
         int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
 
         if(gridX >= heights.length-1 || gridZ >= heights.length-1 || gridX < 0 || gridZ < 0){
@@ -65,11 +64,12 @@ public class Terrain {
         if(gridX >= heights.length-1 || gridZ >= heights.length-1 || gridX < 0 || gridZ < 0){
             return 0;
         }
+        // coordonés dans le carré de la grid.
         float xCoord = (terrainX % gridSquareSize)/gridSquareSize;
         float zCoord = (terrainZ % gridSquareSize)/gridSquareSize;
 
         float answer;
-        if(xCoord <= (1-zCoord)){
+        if(xCoord <= (1-zCoord)){ // Tester dans quel triangle le point est
             answer = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0), new Vector3f(1,
                             heights[gridX + 1][gridZ], 0), new Vector3f(0,
                             heights[gridX][gridZ + 1], 1), new Vector2f(xCoord, zCoord));
@@ -150,6 +150,9 @@ public class Terrain {
         float heightR = getHeight(x+1, z, heightMap);
         float heightD = getHeight(x, z-1, heightMap);
         float heightU = getHeight(x, z+1, heightMap);
+        if(Float.isNaN(heightL) || Float.isNaN(heightR) || Float.isNaN(heightD) || Float.isNaN(heightU)){
+            return new Vector3f(0, 1, 0);
+        }
 
         Vector3f normal = new Vector3f(heightL-heightR, 2f, heightD-heightU);
         normal.normalise();
@@ -157,7 +160,7 @@ public class Terrain {
     }
     private float getHeight(int x, int z, BufferedImage heightMap){
         if(x<0 || x>=heightMap.getHeight() || z<0 || z>=heightMap.getHeight()){
-            return 0;
+            return Float.NaN;
         }
         float height = heightMap.getRGB(x, z)*-1;
         return height / MAX_PIXEL_COLOUR * HEIGHT;
@@ -166,9 +169,6 @@ public class Terrain {
 
     public float getX() {
         return x;
-    }
-    public float getY() {
-        return y;
     }
     public float getZ() {
         return z;

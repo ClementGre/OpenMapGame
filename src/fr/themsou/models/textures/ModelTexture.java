@@ -9,17 +9,12 @@ public class ModelTexture {
     private boolean hasTransparency = false;
     private boolean useFakeLightning = false;
 
-    public ModelTexture(int id){
-        this.textureID = id;
-    }
-    public ModelTexture(int id, int sample){
-        this.textureID = id;
-        TextureSample.applySample(this, sample);
-    }
+    private int numberOfRown = 1;
 
-    public ModelTexture(int id, boolean hasTransparency){
+    public ModelTexture(int id, int sample, int numberOfRows){
         this.textureID = id;
-        this.hasTransparency = hasTransparency;
+        this.numberOfRown = numberOfRows;
+        TextureSample.applySample(this, sample);
     }
 
     public int getID(){
@@ -48,5 +43,11 @@ public class ModelTexture {
     }
     public void setUseFakeLightning(boolean useFakeLightning) {
         this.useFakeLightning = useFakeLightning;
+    }
+    public int getNumberOfRown() {
+        return numberOfRown;
+    }
+    public void setNumberOfRown(int numberOfRown) {
+        this.numberOfRown = numberOfRown;
     }
 }

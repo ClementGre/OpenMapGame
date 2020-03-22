@@ -33,13 +33,13 @@ public class MainLoop extends MainLoopManager {
 
     public void setup(){
 
-        TexturedModel sun = OBJFileLoader.loadOBJToTexturedModel("Sun", -1);
+        TexturedModel sun = OBJFileLoader.loadOBJToTexturedModel("Sun", -1, 1);
         sun.getTexture().setReflectivity(0); sun.getTexture().setReflectivity(0);
         sky = new Sky(new Vector3f(0.0f, 1f,1f), new Light(sun, new Location(800, 200, 200), new Vector3f(0.9f, 0.86f, 0.66f), 40f));
         entities.add(sky.getSun());
 
         RawModel playerModel = OBJFileLoader.loadOBJToRawModel("Player");
-        TexturedModel playerTexturedModel = new TexturedModel(playerModel, Main.loader.loadModelTexture("Player", null, TextureSample.SIMPLEOBJ_SAMPLE));
+        TexturedModel playerTexturedModel = new TexturedModel(playerModel, Main.loader.loadModelTexture("Player", null, TextureSample.SIMPLEOBJ_SAMPLE, 1));
 
         player = new Player(playerTexturedModel, new Location(100, 0f, 50), 0.2f);
         entities.add(player);
@@ -49,13 +49,13 @@ public class MainLoop extends MainLoopManager {
         RawModel grassModel = OBJFileLoader.loadOBJToRawModel("Grass");
         RawModel fernModel = OBJFileLoader.loadOBJToRawModel("Fern");
 
-        TexturedModel tree = new TexturedModel(treeModel, Main.loader.loadModelTexture("Tree", null, TextureSample.SIMPLEOBJ_SAMPLE));
-        TexturedModel highTree = new TexturedModel(highTreeModel, Main.loader.loadModelTexture("HighTree", null, TextureSample.SIMPLEOBJ_SAMPLE));
-        TexturedModel grass = new TexturedModel(grassModel, Main.loader.loadModelTexture("Grass", null, TextureSample.TRANSPARENT_SAMPLE));
-        TexturedModel fern = new TexturedModel(fernModel, Main.loader.loadModelTexture("Fern", null, TextureSample.TRANSPARENT_SAMPLE));
+        TexturedModel tree = new TexturedModel(treeModel, Main.loader.loadModelTexture("Tree", null, TextureSample.SIMPLEOBJ_SAMPLE, 1));
+        TexturedModel highTree = new TexturedModel(highTreeModel, Main.loader.loadModelTexture("HighTree", null, TextureSample.SIMPLEOBJ_SAMPLE, 2));
+        TexturedModel grass = new TexturedModel(grassModel, Main.loader.loadModelTexture("Grass", null, TextureSample.TRANSPARENT_SAMPLE, 4));
+        TexturedModel fern = new TexturedModel(fernModel, Main.loader.loadModelTexture("Fern", null, TextureSample.TRANSPARENT_SAMPLE, 2));
 
         RawModel boxModel = OBJFileLoader.loadOBJToRawModel("Box");
-        TexturedModel box = new TexturedModel(boxModel, Main.loader.loadModelTexture("Box", null, TextureSample.SIMPLEOBJ_SAMPLE));
+        TexturedModel box = new TexturedModel(boxModel, Main.loader.loadModelTexture("Box", null, TextureSample.SIMPLEOBJ_SAMPLE, 1));
 
         TerrainTexture blendMapTexture = Main.loader.loadTerrainTexture("1", "blendMap.png");
         String heightMapTexture = Main.loader.getTerrainFileName("1", "heightMap.png");
@@ -73,31 +73,31 @@ public class MainLoop extends MainLoopManager {
             terrains.add(terrain);
 
             Random r = new Random();
-            for(int k = 0; k <= 75; k++){
+            for(int k = 0; k <= 50; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
                 Entity entity = new Entity(tree, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 1f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 75; k++){
+            for(int k = 0; k <= 50; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
-                Entity entity = new Entity(highTree, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.15f);
+                Entity entity = new Entity(highTree, r.nextInt(4), new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.15f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 75; k++){
+            for(int k = 0; k <= 50; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
-                Entity entity = new Entity(grass, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.4f);
+                Entity entity = new Entity(grass, r.nextInt(9), new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.4f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 100; k++){
+            for(int k = 0; k <= 50; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
-                Entity entity = new Entity(fern, new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.2f);
+                Entity entity = new Entity(fern, r.nextInt(4), new Location(x, terrain.getHeight(x, z), z, r.nextFloat() * 360, 0, 0), 0.2f);
                 entities.add(entity);
             }
-            for(int k = 0; k <= 100; k++){
+            for(int k = 0; k <= 2; k++){
                 float x = xStart + r.nextFloat() * 100;
                 float z = zStart + r.nextFloat() * 100;
                 Entity entity = new Entity(box, new Location(x, terrain.getHeight(x, z)+1, z, r.nextFloat() * 360, 0, 0), 1f);

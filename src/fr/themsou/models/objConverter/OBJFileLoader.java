@@ -18,10 +18,10 @@ public class OBJFileLoader {
 	
 	private static final String RES_LOC = "res/";
 
-	public static TexturedModel loadOBJToTexturedModel(String modelName, int sample){
+	public static TexturedModel loadOBJToTexturedModel(String modelName, int sample, int numberOfRow){
 		ModelData data = loadOBJ(modelName);
 		RawModel model = Main.loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
-		TexturedModel texturedModel = new TexturedModel(model, Main.loader.loadModelTexture(modelName, null, sample));
+		TexturedModel texturedModel = new TexturedModel(model, Main.loader.loadModelTexture(modelName, null, sample, numberOfRow));
 		return texturedModel;
 	}
 	public static RawModel loadOBJToRawModel(String modelName){

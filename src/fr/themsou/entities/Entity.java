@@ -6,13 +6,30 @@ import fr.themsou.utils.Location;
 public class Entity {
 
     private TexturedModel model;
+    private int textureIndex = 0;
+
     public Location location;
     private float scale;
 
-    public Entity(TexturedModel model, Location location, float scale) {
+    public Entity(TexturedModel model, Location location, float scale){
         this.model = model;
         this.location = location;
         this.scale = scale;
+    }
+    public Entity(TexturedModel model, int textureIndex, Location location, float scale){
+        this.model = model;
+        this.location = location;
+        this.scale = scale;
+        this.textureIndex = textureIndex;
+    }
+
+    public float getTextureXOffset(){
+        int column = textureIndex % model.getTexture().getNumberOfRown();
+        return (float)column / (float)model.getTexture().getNumberOfRown();
+    }
+    public float getTextureYOffset(){
+        int row = textureIndex / model.getTexture().getNumberOfRown();
+        return (float)row / (float)model.getTexture().getNumberOfRown();
     }
 
     public void setLocation(Location location){

@@ -88,15 +88,15 @@ public class Loader {
 //////////////////////////////////////////////////////////////////////////////////////////
 
     // MODEL
-    public ModelTexture loadModelTexture(String modelName, String fileName, int sample){
-        return loadTexturePath("res/model/" + modelName + "/" + (fileName == null ? "texture.png" : fileName), sample);
+    public ModelTexture loadModelTexture(String modelName, String fileName, int sample, int numberOfRows){
+        return loadTexturePath("res/model/" + modelName + "/" + (fileName == null ? "texture.png" : fileName), sample, numberOfRows);
     }
-    public ModelTexture loadTexture(String fileName, int sample){
-        return loadTexturePath("res/textures/" + fileName, sample);
+    public ModelTexture loadTexture(String fileName, int sample, int numberOfRows){
+        return loadTexturePath("res/textures/" + fileName, sample, numberOfRows);
     }
-    public ModelTexture loadTexturePath(String path, int sample){ // Instancie un ModelTexture à partir d'un ID de texture
+    public ModelTexture loadTexturePath(String path, int sample, int numberOfRows){ // Instancie un ModelTexture à partir d'un ID de texture
 
-        ModelTexture modelTexture = new ModelTexture(loadTexturePathId(path), sample);
+        ModelTexture modelTexture = new ModelTexture(loadTexturePathId(path), sample, numberOfRows);
         return modelTexture;
     }
 

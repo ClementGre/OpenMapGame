@@ -33,6 +33,14 @@ public class EntityRenderer {
 
             for(Entity entity : batch){
                 loadModelMatrix(entity); // Charge la translation matrix de l'entity
+
+                /*GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_POINT);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, entity.getModel().getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0); // Dessiner à l'écran les vertex du VBO
+
+                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, entity.getModel().getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0); // Dessiner à l'écran les vertex du VBO
+                */
+                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_TRIANGLES);
                 GL11.glDrawElements(GL11.GL_TRIANGLES, entity.getModel().getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0); // Dessiner à l'écran les vertex du VBO
             }
             unbindTexturedModel();
@@ -55,6 +63,7 @@ public class EntityRenderer {
         }else MasterRenderer.enableCulling();
         // SHADER Settings
 
+        shader.loadTextureNumberOfRows(texture.getNumberOfRown());
         shader.loadModelTextureSettings(texture);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -74,6 +83,7 @@ public class EntityRenderer {
 
         Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getLocation().toVector(), entity.getLocation().getPitch(), entity.getLocation().getYaw(), entity.getLocation().getRoll(), entity.getScale());
         shader.loadTransformationMatrix(transformationMatrix); // Charge la transformationMatrix de l'entity dans le shader
+        shader.loadTextureOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
 
     }
 }

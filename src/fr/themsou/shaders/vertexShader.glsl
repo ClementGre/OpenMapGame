@@ -18,6 +18,9 @@ uniform vec3 lightPosition;
 uniform float useFakeLightning;
 uniform float useLightningShader;
 
+uniform float numberOfRows;
+uniform vec2 offset;
+
 const float density = 0.007;
 const float fogGradient = 1.5;
 
@@ -27,7 +30,7 @@ void main(void){
     vec4 worldPositionRelativeToCamera = viewMatrix * worldPosition; // Calcule la position de l'objet avec la caméra comme origine (N'utilise pas la projection matrix)
 
     gl_Position = projectionMatrix * viewMatrix * worldPosition; // Définis la position en fonction de la viewMatrix et de la projectionmatrix
-    pass_textureCoord = textureCoord; // Variable qui passe les coordonés de texture pour le fragment shader
+    pass_textureCoord = (textureCoord/numberOfRows) + offset; // Variable qui passe les coordonés de texture pour le fragment shader
 
     if(useFakeLightning == 1){
         surfaceNormal = (transformationMatrix * vec4(0, 1, 0, 0)).xyz;
