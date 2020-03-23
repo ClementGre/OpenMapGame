@@ -11,6 +11,9 @@ public class ModelTexture {
 
     private int numberOfRown = 1;
 
+    public ModelTexture(int id){
+        this.textureID = id;
+    }
     public ModelTexture(int id, int sample, int numberOfRows){
         this.textureID = id;
         this.numberOfRown = numberOfRows;

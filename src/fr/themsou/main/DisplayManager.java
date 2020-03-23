@@ -10,8 +10,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class DisplayManager {
 
-    private static int width = 1280;
-    private static int height = 720;
+    public static int width = 1280;
+    public static int height = 720;
 
     public static void createDisplay(int width, int height, int fpsCap, String title){
 

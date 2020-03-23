@@ -1,10 +1,13 @@
 package fr.themsou.main;
 
+import fr.themsou.constants.Angle;
 import fr.themsou.entities.*;
 import fr.themsou.entities.livingEntity.ocularEntity.Player;
 import fr.themsou.entities.objectEntity.Light;
 import fr.themsou.entities.objectEntity.Sky;
 import fr.themsou.entities.objectEntity.Terrain;
+import fr.themsou.guis.GuiRenderer;
+import fr.themsou.guis.GuiTexture;
 import fr.themsou.models.RawModel;
 import fr.themsou.models.textures.TerrainTexture;
 import fr.themsou.models.textures.TerrainTexturePack;
@@ -15,6 +18,7 @@ import fr.themsou.renderEngine.MasterRenderer;
 import fr.themsou.utils.Location;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
@@ -25,8 +29,10 @@ public class MainLoop extends MainLoopManager {
 
     public List<Entity> entities = new ArrayList<>();
     public List<Terrain> terrains = new ArrayList<>();
+    public List<GuiTexture> guis = new ArrayList<>();
 
     public MasterRenderer renderer = new MasterRenderer();
+    public GuiRenderer guiRenderer = new GuiRenderer();
     public Sky sky;
 
     public Player player;
@@ -105,9 +111,16 @@ public class MainLoop extends MainLoopManager {
             }
         }
 
+
+        GuiTexture gui = new GuiTexture(Main.loader.loadGuiTextureId("themsou.png"), new Vector2f(20, 20), new Vector2f(100, 100), Angle.TOP_LEFT, false, false);
+        guis.add(gui);
+
+
     }
     public void close(){
+        guiRenderer.cleanUp();
         renderer.cleanUp();
+        Main.loader.cleanUP();
         Main.onCloseDisplay();
     }
 
@@ -138,6 +151,7 @@ public class MainLoop extends MainLoopManager {
         }
 
         renderer.render(player.getViewLocation());
+        guiRenderer.render(guis);
 
         DisplayManager.updateDisplay();
 

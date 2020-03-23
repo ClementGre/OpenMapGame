@@ -26,13 +26,24 @@ public class Loader {
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
         GL30.glBindVertexArray(vaoID); // Bind le VAO
-            bindIndicesBuffer(indices); // Définir les indices de vertex
-            storeDataInAttributeList(0, 3, positions); // Définir les positions des vertex
-            storeDataInAttributeList(1, 2, textureCoords); // Définir les coordonnés de texture
-            storeDataInAttributeList(2, 3, normals); // Définir les normales des vertex
+        bindIndicesBuffer(indices); // Définir les indices de vertex
+        storeDataInAttributeList(0, 3, positions); // Définir les positions des vertex
+        storeDataInAttributeList(1, 2, textureCoords); // Définir les coordonnés de texture
+        storeDataInAttributeList(2, 3, normals); // Définir les normales des vertex
         GL30.glBindVertexArray(0); // Unbind le VAO
 
         return new RawModel(vaoID, indices.length);
+    }
+
+    public RawModel loadToVAO(float[] positions){ // Crée un VAO et le renvoie sous forme de RawModel (Qui peut être stoqué dans un TexturedModel)
+
+        int vaoID = GL30.glGenVertexArrays();
+        vaos.add(vaoID);
+        GL30.glBindVertexArray(vaoID); // Bind le VAO
+        this.storeDataInAttributeList(0, 2, positions);
+        GL30.glBindVertexArray(0); // Unbind le VAO
+
+        return new RawModel(vaoID, positions.length/2);
     }
 
 //////////////////////////////////// ENREGISTREMENT DES VBO /////////////////////////////////////
@@ -95,9 +106,11 @@ public class Loader {
         return loadTexturePath("res/textures/" + fileName, sample, numberOfRows);
     }
     public ModelTexture loadTexturePath(String path, int sample, int numberOfRows){ // Instancie un ModelTexture à partir d'un ID de texture
-
         ModelTexture modelTexture = new ModelTexture(loadTexturePathId(path), sample, numberOfRows);
         return modelTexture;
+    }
+    public int loadGuiTextureId(String fileName){
+        return loadTexturePathId("res/textures/gui/" + fileName);
     }
 
     // TERRAIN
@@ -117,7 +130,12 @@ public class Loader {
     public int loadTexturePathId(String path){ // Charger une texture et renvoyer un ID (Qui peut être chargé dans un ModelTexture qui lui même peut être stoqué dans un TexturedModel)
         Texture texture = null;
         try{
-            texture = TextureLoader.getTexture("PNG", new FileInputStream(path));
+            if(path.split("\\.")[path.split("\\.").length -1].equals("png")){
+                texture = TextureLoader.getTexture("png", new FileInputStream(path));
+            }else{
+                texture = TextureLoader.getTexture("jpg", new FileInputStream(path));
+            }
+
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
             GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -0.4f);
